@@ -11,6 +11,10 @@ const PantryInput: React.FC = () => {
     }
   };
 
+  const handleRemove = (indexToRemove: number) => {
+    setPantry(pantry.filter((_, index) => index !== indexToRemove));
+  };
+
   return (
     <div style={{ maxWidth: 400, margin: "auto", padding: 20 }}>
       <h2>Pantry Ingredients</h2>
@@ -27,7 +31,12 @@ const PantryInput: React.FC = () => {
 
       <ul>
         {pantry.map((item, index) => (
-          <li key={index}>{item}</li>
+          <li key={index} style={{ display: "flex", justifyContent: "space-between", marginTop: 8 }}>
+            {item}
+            <button onClick={() => handleRemove(index)} style={{ color: "red" }}>
+              Remove
+            </button>
+          </li>
         ))}
       </ul>
     </div>
