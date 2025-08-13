@@ -1,13 +1,13 @@
-import React from 'react';
-import './App.css';
-import PantryInput from './components/PantryInput';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import CategoryList from "./components/CategoryList";
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <PantryInput/>
-    </div>
+    <>
+    <CategoryList/>
+    </>
   );
-}
+};
 
 export default App;
