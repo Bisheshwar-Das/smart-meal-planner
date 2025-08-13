@@ -28,6 +28,16 @@ const ShoppingListPage: React.FC = () => {
     setItems(items.filter((_, idx) => idx !== index));
   };
 
+  const handleEditItem = (
+    index: number,
+    field: keyof ShoppingItem,
+    value: string
+  ) => {
+    const updatedItems = [...items];
+    updatedItems[index][field] = value;
+    setItems(updatedItems);
+  };
+
   return (
     <div style={{ padding: "2rem" }}>
       <h1>Shopping List</h1>
@@ -69,8 +79,47 @@ const ShoppingListPage: React.FC = () => {
       <ul>
         {items.map((item, idx) => (
           <li key={idx} style={{ marginBottom: "0.5rem" }}>
-            {item.name} — {item.quantity} {item.unit} ({item.category}){" "}
-            <button onClick={() => handleRemoveItem(idx)}>Delete</button>
+            <input
+              type="text"
+              value={item.name}
+              onChange={(e) => handleEditItem(idx, "name", e.target.value)}
+              style={{ width: "150px" }}
+            />
+            <input
+              type="number"
+              value={item.quantity}
+              onChange={(e) => handleEditItem(idx, "quantity", e.target.value)}
+              style={{ width: "70px", marginLeft: "0.5rem" }}
+            />
+            <select
+              value={item.unit}
+              onChange={(e) => handleEditItem(idx, "unit", e.target.value)}
+              style={{ marginLeft: "0.5rem" }}
+            >
+              <option value="pieces">pieces</option>
+              <option value="kg">kg</option>
+              <option value="g">g</option>
+              <option value="litres">litres</option>
+              <option value="ml">ml</option>
+            </select>
+            <select
+              value={item.category}
+              onChange={(e) => handleEditItem(idx, "category", e.target.value)}
+              style={{ marginLeft: "0.5rem" }}
+            >
+              <option value="Vegetables">Vegetables</option>
+              <option value="Fruits">Fruits</option>
+              <option value="Dairy">Dairy</option>
+              <option value="Meat">Meat</option>
+              <option value="Pantry">Pantry</option>
+              <option value="Other">Other</option>
+            </select>
+            <button
+              onClick={() => handleRemoveItem(idx)}
+              style={{ marginLeft: "0.5rem" }}
+            >
+              Delete
+            </button>
           </li>
         ))}
       </ul>
