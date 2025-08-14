@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 interface ShoppingItem {
+  id:number;
   name: string;
   quantity: string;
   unit: string;
@@ -41,25 +42,25 @@ const ShoppingListPage: React.FC = () => {
 
   const handleAddItem = () => {
     if (!name || !quantity) return;
-    setItems([...items, { name, quantity, unit, category }]);
+    setItems([...items, {id:Date.now(), name, quantity, unit, category }]);
     setName("");
     setQuantity("");
     setUnit("pieces");
     setCategory("Other");
   };
 
-  const handleRemoveItem = (index: number) => {
-    setItems(items.filter((_, idx) => idx !== index));
+  const handleRemoveItem = (id: number) => {
+    setItems(items.filter(item=>item.id!==id));
   };
 
   const handleEditItem = (
-    index: number,
+    id: number,
     field: keyof ShoppingItem,
     value: string
   ) => {
-    const updatedItems = [...items];
-    updatedItems[index][field] = value;
-    setItems(updatedItems);
+    setItems(items.map(item => 
+      item.id === id ? { ...item, [field]: value } : item
+    ));
   };
 
   return (
@@ -118,23 +119,23 @@ const ShoppingListPage: React.FC = () => {
 
       {/*List Items */}
       <ul>
-        {filteredItems.map((item, idx) => (
-          <li key={idx} style={{ marginBottom: "0.5rem" }}>
+        {filteredItems.map((item) => (
+          <li key={item.id} style={{ marginBottom: "0.5rem" }}>
             <input
               type="text"
               value={item.name}
-              onChange={(e) => handleEditItem(idx, "name", e.target.value)}
+              onChange={(e) => handleEditItem(item.id, "name", e.target.value)}
               style={{ width: "150px" }}
             />
             <input
               type="number"
               value={item.quantity}
-              onChange={(e) => handleEditItem(idx, "quantity", e.target.value)}
+              onChange={(e) => handleEditItem(item.id, "quantity", e.target.value)}
               style={{ width: "70px", marginLeft: "0.5rem" }}
             />
             <select
               value={item.unit}
-              onChange={(e) => handleEditItem(idx, "unit", e.target.value)}
+              onChange={(e) => handleEditItem(item.id, "unit", e.target.value)}
               style={{ marginLeft: "0.5rem" }}
             >
               <option value="pieces">pieces</option>
@@ -145,7 +146,7 @@ const ShoppingListPage: React.FC = () => {
             </select>
             <select
               value={item.category}
-              onChange={(e) => handleEditItem(idx, "category", e.target.value)}
+              onChange={(e) => handleEditItem(item.id, "category", e.target.value)}
               style={{ marginLeft: "0.5rem" }}
             >
               <option value="Vegetables">Vegetables</option>
@@ -156,7 +157,7 @@ const ShoppingListPage: React.FC = () => {
               <option value="Other">Other</option>
             </select>
             <button
-              onClick={() => handleRemoveItem(idx)}
+              onClick={() => handleRemoveItem(item.id)}
               style={{ marginLeft: "0.5rem" }}
             >
               Delete
