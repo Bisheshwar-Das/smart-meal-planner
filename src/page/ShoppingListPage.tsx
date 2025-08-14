@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 interface ShoppingItem {
-  id:number;
+  id: number;
   name: string;
   quantity: string;
   unit: string;
@@ -42,7 +42,7 @@ const ShoppingListPage: React.FC = () => {
 
   const handleAddItem = () => {
     if (!name || !quantity) return;
-    setItems([...items, {id:Date.now(), name, quantity, unit, category }]);
+    setItems([...items, { id: Date.now(), name, quantity, unit, category }]);
     setName("");
     setQuantity("");
     setUnit("pieces");
@@ -50,7 +50,7 @@ const ShoppingListPage: React.FC = () => {
   };
 
   const handleRemoveItem = (id: number) => {
-    setItems(items.filter(item=>item.id!==id));
+    setItems(items.filter(item => item.id !== id));
   };
 
   const handleEditItem = (
@@ -58,7 +58,7 @@ const ShoppingListPage: React.FC = () => {
     field: keyof ShoppingItem,
     value: string
   ) => {
-    setItems(items.map(item => 
+    setItems(items.map(item =>
       item.id === id ? { ...item, [field]: value } : item
     ));
   };
