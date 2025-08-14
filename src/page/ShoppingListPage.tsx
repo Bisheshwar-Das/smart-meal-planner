@@ -1,19 +1,38 @@
 // src/pages/ShoppingListPage.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface ShoppingItem {
   name: string;
-  quantity: string; 
+  quantity: string;
   unit: string;
   category: string;
 }
-
+const LOCAL_STORAGE_KEY = "shoppingList";
 const ShoppingListPage: React.FC = () => {
   const [items, setItems] = useState<ShoppingItem[]>([]);
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [unit, setUnit] = useState("pieces");
   const [category, setCategory] = useState("Other");
+
+  const [loaded, setLoaded] = useState(false);  
+
+  // Load once on mount
+  useEffect(() => {
+    const saved = localStorage.getItem("shoppingList");
+    if (saved) {
+      setItems(JSON.parse(saved));
+    }
+    setLoaded(true); // to control the other effect from setting item
+  }, []);
+
+  // Save only after initial load to prevent seeing items list empty
+  useEffect(() => {
+    if (loaded) {
+      localStorage.setItem("shoppingList", JSON.stringify(items));
+    }
+  }, [items, loaded]);
+
 
   const handleAddItem = () => {
     if (!name || !quantity) return;
