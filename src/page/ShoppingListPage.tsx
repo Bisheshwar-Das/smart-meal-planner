@@ -12,15 +12,17 @@ interface ShoppingItem {
 const LOCAL_STORAGE_KEY = "shoppingList";
 const ShoppingListPage: React.FC = () => {
   const [items, setItems] = useState<ShoppingItem[]>([]);
+
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [unit, setUnit] = useState("pieces");
   const [category, setCategory] = useState("Other");
-  const [filterCategory, setFilterCategory] = useState("All");
+  
   const [loaded, setLoaded] = useState(false);
+
+  const [filterCategory, setFilterCategory] = useState("All");
   const [sortOption, setSortOption] = useState("name-asc");
   const [sortOrderAsc, setSortOrderAsc] = useState(true); // true -> ascending
-
   const filteredItems =
     filterCategory === "All"
       ? items
@@ -92,7 +94,7 @@ const ShoppingListPage: React.FC = () => {
 
 
   return (
-    <div style={{ padding: "2rem" }}>
+    <div className="bg-blue-500">
       <h1>Shopping List</h1>
 
       {/* Form */}
