@@ -14,8 +14,13 @@ const ShoppingListPage: React.FC = () => {
   const [quantity, setQuantity] = useState("");
   const [unit, setUnit] = useState("pieces");
   const [category, setCategory] = useState("Other");
+  const [filterCategory, setFilterCategory] = useState("All");
+  const [loaded, setLoaded] = useState(false);
 
-  const [loaded, setLoaded] = useState(false);  
+  const filteredItems =
+    filterCategory === "All"
+      ? items
+      : items.filter((item) => item.category === filterCategory);
 
   // Load once on mount
   useEffect(() => {
@@ -94,9 +99,26 @@ const ShoppingListPage: React.FC = () => {
         <button onClick={handleAddItem}>Add Item</button>
       </div>
 
-      {/* List */}
+      {/* Category Filter */}
+      <div style={{ marginBottom: "1rem" }}>
+        <label style={{ marginRight: "0.5rem" }}>Filter by category:</label>
+        <select
+          value={filterCategory}
+          onChange={(e) => setFilterCategory(e.target.value)}
+        >
+          <option value="All">All</option>
+          <option value="Vegetables">Vegetables</option>
+          <option value="Fruits">Fruits</option>
+          <option value="Dairy">Dairy</option>
+          <option value="Meat">Meat</option>
+          <option value="Pantry">Pantry</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      {/*List Items */}
       <ul>
-        {items.map((item, idx) => (
+        {filteredItems.map((item, idx) => (
           <li key={idx} style={{ marginBottom: "0.5rem" }}>
             <input
               type="text"
